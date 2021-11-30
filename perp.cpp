@@ -5,13 +5,13 @@
 #include <fstream>
 #include <numeric>
 
-enum class thing_id { obraczka, dlugopis };
+enum class thing_id { ring, pen };
 
 std::ostream& operator<< ( std::ostream& os, thing_id e )
 {
     switch (e) {
-    case thing_id::obraczka: os << "obraczka"; break;
-    case thing_id::dlugopis: os << "dlugopis"; break;
+    case thing_id::ring: os << "ring"; break;
+    case thing_id::pen: os << "pen"; break;
     default: os << ""; break; }
     return os;
 }
@@ -139,14 +139,14 @@ std::vector<thing> generate_data ( int size )
     std::vector<thing> result(size);
     for (thing& e: result)
     {
-        e.id = (rand()%2)?(thing_id::obraczka):(thing_id::dlugopis);
+        e.id = (rand()%2)?(thing_id::ring):(thing_id::pen);
         switch (e.id)
         {
-            case thing_id::obraczka:
+            case thing_id::ring:
                 e.length = rand()%14+1;
                 e.diameter = rand()%40+10;
             break;
-            case thing_id::dlugopis:
+            case thing_id::pen:
                 e.length = rand()%40+10;
                 e.diameter = rand()%14+1;
             break;
@@ -248,7 +248,7 @@ int main ( int argc, char* argv[] )
 
     perceptron perp(2,"params.txt",[](double x)->thing_id
     {
-        return (x < 0)?(thing_id::obraczka):(thing_id::dlugopis);
+        return (x < 0)?(thing_id::ring):(thing_id::pen);
     },
     0.00001,5);
 
@@ -288,15 +288,15 @@ int main ( int argc, char* argv[] )
         {
             system("clear");
             
-            std::cout << "Podaj dlugosc : ";
+            std::cout << "Set length : ";
             
             std::cin >> length;
             
-            std::cout << "Podaj srednice : ";
+            std::cout << "Set diameter : ";
             
             std::cin >> diameter;
             
-            std::cout << "Podany przez Ciebie przedmiot to : " << perp(length,diameter) << ".\n";
+            std::cout << "Your item is : " << perp(length,diameter) << ".\n";
         }
     }
     else if (mode == "reset")
